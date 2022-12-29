@@ -1,3 +1,12 @@
+# /**
+#  * @author Zhirui(Alex) Yang
+#  * @email zy2494@columbia.edu
+#  * @create date 2022-12-27 23:37:56
+#  * @modify date 2022-12-27 23:37:56
+#  * @desc [description]
+#  */
+
+
 import gc
 import re
 import os
@@ -16,6 +25,8 @@ from tensorflow import keras
 from tensorflow.keras import datasets, layers, models, losses
 from tensorflow.keras.applications.inception_v3 import InceptionV3
 from tensorflow.keras.utils import plot_model
+
+from config import RAW_DATA_DIR
 
 seed = 1
 random.seed(seed)
@@ -97,6 +108,24 @@ def get_center(slide_image, x_level, y_level, level=6, patch_len=299):
   return xc_0, yc_0
 
 
+def delete_gray(slide_image, threshold=0.4, show=False):
+  tissue_pixels = find_tissue_pixels(slide_image)
+  percent_tissue = len(tissue_pixels) / float(slide_image.shape[0] * slide_image.shape[0]) * 100
+  if show:
+    print ("%d tissue_pixels pixels (%.1f percent of the image)" % (len(tissue_pixels), percent_tissue)) 
+  
+  if percent_tissue >= threshold:
+    return True
+  else:
+    return False
+
+
+def get_target(mask_region, patch_len=299, target_size=128):
+  offset = (patch_len - target_size)//2
+  target = mask_region[offset: offset+128, offset: offset+128]
+  return 1.0 if target.sum() != 0 else 0.0
+
+
 def get_patch_from_center(slide_image, xc_0, yc_0, level=6, patch_len=299):
   factor = 2 ** level
   xc_level = xc_0 // factor
@@ -112,23 +141,6 @@ def get_patch_from_center(slide_image, xc_0, yc_0, level=6, patch_len=299):
   return slide_image[
         x_level: x_level + patch_len, y_level: y_level + patch_len]
         
-
-def delete_gray(slide_image, threshold=0.4, show=False):
-  tissue_pixels = find_tissue_pixels(slide_image)
-  percent_tissue = len(tissue_pixels) / float(slide_image.shape[0] * slide_image.shape[0]) * 100
-  if show:
-    print ("%d tissue_pixels pixels (%.1f percent of the image)" % (len(tissue_pixels), percent_tissue)) 
-  
-  if percent_tissue >= threshold:
-    return True
-  else:
-    return False
-
-def get_target(mask_region, patch_len=299, target_size=128):
-  offset = (patch_len - target_size)//2
-  target = mask_region[offset: offset+128, offset: offset+128]
-  return 1.0 if target.sum() != 0 else 0.0
-
 
 def get_patches_from_center(multi_slide_images, xc_0, yc_0, level_lst=[5,6,7], patch_len=299):
   multi_pitches = []
@@ -160,8 +172,8 @@ def allocate_ones(mask_image, patch_len=299):
 
   all_ones = [
       (x, y) for x, y in all_ones if (
-          patch_len//2 < x < slide_image.shape[0]-patch_len//2) and (
-              patch_len//2 < y < slide_image.shape[1]-patch_len//2)]
+          patch_len//2 < x < mask_image.shape[0]-patch_len//2) and (
+              patch_len//2 < y < mask_image.shape[1]-patch_len//2)]
   random.shuffle(all_ones)
   print("The number of tumor pixels after filter", len(all_ones))
   return all_ones
