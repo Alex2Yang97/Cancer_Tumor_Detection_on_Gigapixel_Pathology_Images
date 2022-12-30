@@ -3,7 +3,7 @@
 #  * @email zy2494@columbia.edu
 #  * @create date 2022-12-27 23:38:19
 #  * @modify date 2022-12-27 23:38:19
-#  * @desc [description]
+#  * @desc [Functions used to plot heatmap, including one-zoom or more zooms]
 #  */
 
 

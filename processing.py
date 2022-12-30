@@ -3,7 +3,7 @@
 #  * @email zy2494@columbia.edu
 #  * @create date 2022-12-27 23:37:56
 #  * @modify date 2022-12-27 23:37:56
-#  * @desc [description]
+#  * @desc [Functions used for data processing and data augmentation]
 #  */
 
 
@@ -201,5 +201,23 @@ def allocate_zeros(slide_image, mask_image, patch_len=299):
   return tissue_pixels
 
 
+def rotation_flip(image):
+  temp = tf.image.rot90(image, k=np.random.choice([0, 1, 2, 3]))
+  temp = tf.image.flip_left_right(temp)
+  temp = tf.image.rot90(temp, k=np.random.choice([0, 1, 2, 3]))
+  return temp
 
+
+def color_augmentation(image, brightness=64/255, saturation=0.25, hue=0.04, contrast=0.75):
+  temp = tf.image.random_brightness(image, max_delta=brightness, seed=0)
+  temp = tf.image.random_saturation(temp, lower=0, upper=saturation, seed=0)
+  temp = tf.image.random_hue(temp, max_delta=hue, seed=0)
+  temp = tf.image.random_contrast(temp, lower=0, upper=contrast, seed=None)
+  return temp
+
+
+def list_map_data_aug(input_list):
+  return list(
+      map(lambda x: color_augmentation(rotation_flip(x)), input_list)
+      )
 

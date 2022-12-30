@@ -3,7 +3,7 @@
 #  * @email zy2494@columbia.edu
 #  * @create date 2022-12-27 23:38:36
 #  * @modify date 2022-12-27 23:38:36
-#  * @desc [description]
+#  * @desc [Create three models: base_model, one_zoom_model, three_zooms_model]
 #  */
 
 
