@@ -45,6 +45,8 @@ Reproduce and improve the methods of the paper [Detecting Cancer Metastases on G
 --- 
 ## How to run this project
 
+0) **Run *project_starter_code.ipynb* to learn about the original data.**
+
 1) **Run *generate_samples.ipynb* to generate training samples.**  
 All samples will be saved as .npy files, which are very big. Please make sure you have enough space to save samples. if you don't want to save samples on your local, you can take step 2 directly.
 
