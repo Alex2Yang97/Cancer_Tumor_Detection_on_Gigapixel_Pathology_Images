@@ -7,7 +7,6 @@
 Reproduce and improve the methods of the paper [Detecting Cancer Metastases on Gigapixel Pathology Images](https://arxiv.org/abs/1703.02442)
 
 ---
-
 ## Project Structure
 
 - Please make sure you have the following directories before running the project 
@@ -44,7 +43,6 @@ Reproduce and improve the methods of the paper [Detecting Cancer Metastases on G
 - *plot_heatmap.py* has the functions used to plot heatmap.
 
 --- 
-
 ## How to run this project
 
 1) **Run *generate_samples.ipynb* to generate training samples.**  
@@ -59,8 +57,7 @@ I have a separate file to test models because I hope to draw the ROC curves of m
 You can change the parameters in the files to generate you own samples and create you own models.
 
 ---
-
 ## Others
 
 - Youtube video: https://www.youtube.com/watch?v=4w0jdRBDIYI
-- Project slides: [slides](https://github.com/Alex2Yang97?tab=repositories)
+- Project slides: [slides](https://github.com/Alex2Yang97/Cancer_Tumor_Detection_on_Gigapixel_Pathology_Images/blob/main/docs/Project_slides.pdf)
